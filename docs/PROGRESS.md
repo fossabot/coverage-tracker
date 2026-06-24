@@ -133,7 +133,7 @@ Self-test workflow created. Uses `min-coverage: '20'` (runner's actual coverage 
 
 #### Step 2 — End-to-end test matrix (run in order)
 
-- [ ] **Push to main** — OIDC token mints, `/ingest` accepts it, metric row appears in D1; verify with `wrangler d1 execute` or `/api/projects` endpoint
+- [x] **Push to main** — OIDC token mints, `/ingest` accepts it, 2 metrics ingested (`coverage: 22.38%`, `duplication: 0.00%`)
 - [ ] **Push to feature branch** — Action exits cleanly with "Not on default branch" info log; job green, no 422, no metric written
 - [ ] **PR from same repo** — baselines fetched (from the push above), Check Run posted on PR head SHA with summary table; pass and fail cases exercised by adjusting `min-coverage`
 - [ ] **Fork PR** (if applicable) — OIDC mint fails gracefully (warning, not failure); Check Run post skipped gracefully
