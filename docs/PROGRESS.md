@@ -78,8 +78,10 @@ Dashboard built in `dashboard/` (SvelteKit 5 + `@sveltejs/adapter-cloudflare`). 
 - [x] Local dev bypass (`DEV_BYPASS_SECRET`) — dead code in production; documented in `.dev.vars.example`
 - [x] `dashboard/wrangler.toml` anchors adapter to dashboard dir (prevents root Worker config bleed)
 - [x] `test/seed-local.sql` + `db:seed:local` npm script for local D1 test data
-- [ ] Cloudflare Pages project created and wired to this repo
-- [ ] `WORKER_URL` set as Pages environment variable
+- [x] `.github/workflows/deploy-dashboard.yml` — Direct Upload via `wrangler pages deploy`; previews on PRs, production on push to main
+- [ ] Cloudflare Pages project created (`wrangler pages project create coverage-tracker-dashboard --production-branch main`)
+- [ ] `WORKER_URL` set as Pages secret (`wrangler pages secret put WORKER_URL`)
+- [ ] `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` added as GitHub Actions repo secrets
 - [ ] Cloudflare Access application protecting the Pages hostname
 
 ---
