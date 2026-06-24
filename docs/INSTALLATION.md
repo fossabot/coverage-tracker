@@ -364,6 +364,54 @@ If both tables have rows, the installation is complete and the Worker is ready t
 
 ---
 
+## 14. Deploy the dashboard
+
+The dashboard is a SvelteKit app in `dashboard/` that deploys to Cloudflare Pages via Direct Upload (GitHub Actions).
+
+### Create the Pages project
+
+```bash
+cd dashboard
+npx wrangler pages project create coverage-tracker-dashboard --production-branch main
+```
+
+### Set the Worker URL
+
+```bash
+# Still inside dashboard/
+npx wrangler pages secret put WORKER_URL
+# Enter: https://coverage-tracker.yourdomain.com
+```
+
+### Add GitHub Actions secrets
+
+In your GitHub repo → **Settings → Secrets and variables → Actions**, add:
+
+| Secret | Value |
+|--------|-------|
+| `CLOUDFLARE_API_TOKEN` | A Cloudflare API token with *Cloudflare Pages: Edit* permission |
+| `CLOUDFLARE_ACCOUNT_ID` | Your Cloudflare account ID (visible in the Workers dashboard URL) |
+
+### Connect the Access application
+
+The dashboard needs its own Cloudflare Access application to restrict who can view it.
+
+Zero Trust → **Access → Applications → Add an application → Self-hosted**
+
+| Field | Value |
+|-------|-------|
+| App name | `coverage-tracker-dashboard` |
+| Application domain | `coverage-tracker-dashboard.pages.dev` *(or your custom domain)* |
+| Identity providers | GitHub (same as the Worker app) |
+
+Add the same Allow policy (email allowlist) as the Worker Access app.
+
+### First deploy
+
+Push any change to `dashboard/` on `main`, or trigger the workflow manually — the CI job builds and deploys automatically on every push.
+
+---
+
 ## Next steps
 
 - **Ingest metrics from CI:** Add a workflow to your repos that posts coverage/complexity/duplication data to `/ingest` using a GitHub Actions OIDC token. See the reporting Action docs (Phase 6).
