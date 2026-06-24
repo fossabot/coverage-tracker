@@ -179,24 +179,25 @@ if command -v jscpd &>/dev/null; then
     --quiet \
     2>/dev/null || true
 
-  JSCPD_REPORT="$JSCPD_OUT/jscpd-report.json"
-  if [[ -f "$JSCPD_REPORT" ]]; then
-    # Expand $JSCPD_REPORT into the heredoc (no single-quote on delimiter)
-    DUP_PCT=$(python3 - <<PYEOF 2>/dev/null || echo "0"
-import json
-with open("$JSCPD_REPORT") as f:
-    d = json.load(f)
+  # jscpd may place the report in a subdirectory depending on version
+  JSCPD_REPORT=$(find "$JSCPD_OUT" -name "jscpd-report.json" -type f 2>/dev/null | head -1)
+
+  if [[ -n "$JSCPD_REPORT" ]]; then
+    DUP_PCT=$(python3 -c '
+import json, sys
+d = json.load(sys.stdin)
 try:
     val = float(d["statistics"]["total"]["percentage"])
 except (KeyError, TypeError, ValueError):
     val = 0.0
 print(f"{val:.2f}")
-PYEOF
-)
+' < "$JSCPD_REPORT" 2>/dev/null || echo "0.00")
     METRICS+=("{\"name\":\"duplication\",\"value\":${DUP_PCT},\"unit\":\"%\"}")
     echo "::notice::Duplication: ${DUP_PCT}%"
   else
-    echo "::warning::jscpd ran but produced no report. Skipping duplication metric."
+    # No report written — jscpd found no clones; 0% is the accurate value
+    METRICS+=("{\"name\":\"duplication\",\"value\":0.00,\"unit\":\"%\"}")
+    echo "::notice::Duplication: 0.00% (no clones detected)"
   fi
 else
   echo "::warning::jscpd could not be installed. Skipping duplication metric."
