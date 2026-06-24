@@ -1,0 +1,19 @@
+# Copy this file to .dev.vars and fill in values for local development.
+# .dev.vars is gitignored — never commit real secrets.
+# In production, set these with: wrangler secret put <NAME>
+#
+# GITHUB_APP_PRIVATE_KEY must be in PKCS#8 PEM format. GitHub issues PKCS#1.
+# Convert with:
+#   openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt \
+#     -in private-key.pem -out private-key-pkcs8.pem
+# Then paste the full PEM (including headers) as the value, with literal \n for newlines.
+
+GITHUB_APP_ID=
+GITHUB_APP_CLIENT_ID=
+GITHUB_APP_PRIVATE_KEY=
+GITHUB_WEBHOOK_SECRET=
+
+# Cloudflare Access — your Access application's AUD tag (from Zero Trust dashboard)
+CF_ACCESS_AUD=
+# Your Cloudflare Access team domain, e.g. myteam.cloudflareaccess.com
+CF_ACCESS_TEAM_DOMAIN=
