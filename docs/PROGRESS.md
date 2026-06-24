@@ -67,13 +67,20 @@ Implemented as part of the Phase 6 Action (the two are tightly coupled). **No en
 
 ---
 
-## Phase 5 — Svelte dashboard ⬜ Not started
+## Phase 5 — Svelte dashboard 🔶 Implemented — pending Pages deployment
 
-- [ ] Cloudflare Pages project wired to this repo
-- [ ] Owner/repo grouping — top-level cards with latest values + sparklines
-- [ ] Drill-in view: full trend charts per metric, branch selector
-- [ ] Cloudflare Access protecting the Pages app
-- [ ] Charting library decision (uPlot or Chart.js)
+Dashboard built in `dashboard/` (SvelteKit 5 + `@sveltejs/adapter-cloudflare`). All API calls server-side; local dev uses `DEV_BYPASS_SECRET` bypass. Service Token refactor documented in `docs/plans/service-auth-token.md`.
+
+- [x] SvelteKit 5 app in `dashboard/` with `@sveltejs/adapter-cloudflare`
+- [x] Owner/repo grouping — top-level cards with latest coverage % + uPlot sparklines
+- [x] Drill-in view: full uPlot trend charts per metric (coverage/complexity/duplication), branch selector
+- [x] `Cf-Access-Jwt-Assertion` forwarded server-side to Worker; never touches browser JS
+- [x] Local dev bypass (`DEV_BYPASS_SECRET`) — dead code in production; documented in `.dev.vars.example`
+- [x] `dashboard/wrangler.toml` anchors adapter to dashboard dir (prevents root Worker config bleed)
+- [x] `test/seed-local.sql` + `db:seed:local` npm script for local D1 test data
+- [ ] Cloudflare Pages project created and wired to this repo
+- [ ] `WORKER_URL` set as Pages environment variable
+- [ ] Cloudflare Access application protecting the Pages hostname
 
 ---
 
