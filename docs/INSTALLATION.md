@@ -368,8 +368,6 @@ If both tables have rows, the installation is complete and the Worker is ready t
 
 The dashboard is a SvelteKit app in `dashboard/` that deploys to Cloudflare Pages via Direct Upload (GitHub Actions).
 
-> **Note:** All `wrangler pages` commands will print a warning about the root `wrangler.jsonc` lacking a `pages_build_output_dir` field. This is expected — wrangler walks up the directory tree and finds the Worker config in the repo root. The warning is harmless; the commands work correctly.
-
 ### Create the Pages project
 
 ```bash
