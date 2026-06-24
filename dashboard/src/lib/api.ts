@@ -7,6 +7,7 @@ export async function fetchProjects(
 ): Promise<ProjectRow[]> {
   const res = await fetchFn(`${workerUrl}/api/projects`, {
     headers: { 'Cf-Access-Jwt-Assertion': jwt },
+    redirect: 'manual',
   });
   if (!res.ok) throw new Error(`Failed to fetch projects: HTTP ${res.status}`);
   return res.json() as Promise<ProjectRow[]>;
@@ -28,6 +29,7 @@ export async function fetchTrend(
   url.searchParams.set('limit', String(limit));
   const res = await fetchFn(url.toString(), {
     headers: { 'Cf-Access-Jwt-Assertion': jwt },
+    redirect: 'manual',
   });
   if (!res.ok) throw new Error(`Failed to fetch trend: HTTP ${res.status}`);
   return res.json() as Promise<TrendResponse>;
