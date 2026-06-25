@@ -55,7 +55,6 @@ jobs:
           # Replace the old file with the newly updated one
           mv wrangler.json.tmp wrangler.jsonc
 
-
       - name: Deploy Worker + assets
         if: github.ref == 'refs/heads/main'
         run: npx wrangler deploy
