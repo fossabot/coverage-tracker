@@ -146,8 +146,12 @@ export async function runPRCheck(
     const url = `${workerUrl}/api/baseline/${owner}/${repo}?metric=${encodeURIComponent(m.name)}`;
     const res = await fetch(url, { headers: { Authorization: `Bearer ${oidcToken}` } });
     if (res.ok) {
-      const data = (await res.json()) as BaselineResponse;
-      baselines[m.name] = data.value;
+      try {
+        const data = (await res.json()) as BaselineResponse;
+        baselines[m.name] = data.value;
+      } catch {
+        core.warning(`Baseline fetch for "${m.name}" returned non-JSON body (HTTP ${res.status}) — skipping baseline.`);
+      }
     } else if (res.status !== 404) {
       core.warning(`Baseline fetch for "${m.name}" returned HTTP ${res.status}.`);
     }
