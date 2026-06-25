@@ -50,7 +50,7 @@ jobs:
           DB_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
         run: |
           # Use jq to update the database_id inside the d1_databases array
-          jq '.d1_databases[0].database_id = env.DB_ID' wrangler.jsonc > wrangler.json.tmp
+          npx strip-json-comments-cli wrangler.jsonc | jq '.d1_databases[0].database_id = env.DB_ID' > wrangler.json.tmp
           
           # Replace the old file with the newly updated one
           mv wrangler.json.tmp wrangler.jsonc
